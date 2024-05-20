@@ -55,7 +55,7 @@ class MyAccountScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            "Philip Ramirez",
+                            "",
                             textAlign: TextAlign.start,
                             maxLines: 1,
                             overflow: TextOverflow.clip,
@@ -95,7 +95,7 @@ class MyAccountScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                     textColor: Color(0xffffffff),
                     child: Text(
-                      "Basic",
+                      "",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -119,7 +119,7 @@ class MyAccountScreen extends StatelessWidget {
                 textColor: Color(0xff3a57e8),
                 minWidth: MediaQuery.of(context).size.width,
                 child: Text(
-                  "Upgrade Plan",
+                  "",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -137,7 +137,7 @@ class MyAccountScreen extends StatelessWidget {
                 ListTile(
                   tileColor: Color(0xffffffff),
                   title: Text(
-                    "Settings",
+                    "Ustawienia",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
@@ -166,7 +166,7 @@ class MyAccountScreen extends StatelessWidget {
                 SwitchListTile(
                   value: true,
                   title: Text(
-                    "Dark Mode",
+                    "",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
@@ -200,7 +200,7 @@ class MyAccountScreen extends StatelessWidget {
                 ListTile(
                   tileColor: Color(0xffffffff),
                   title: Text(
-                    "About us",
+                    "",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
@@ -229,7 +229,7 @@ class MyAccountScreen extends StatelessWidget {
                 ListTile(
                   tileColor: Color(0xffffffff),
                   title: Text(
-                    "Tems and Conditions",
+                    "",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
@@ -262,7 +262,7 @@ class MyAccountScreen extends StatelessWidget {
               height: 40,
               minWidth: MediaQuery.of(context).size.width,
               child: Text(
-                "Log out",
+                "Wyloguj się",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,

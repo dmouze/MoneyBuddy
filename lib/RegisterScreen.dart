@@ -18,14 +18,15 @@ class RegisterScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 8, 0, 30),
                   child: Text(
-                    "Rejestracja",
+                    "Witaj!",
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
+                      fontFamily: 'OpenSans',
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
-                      fontSize: 20,
-                      color: Color(0xff3a57e8),
+                      fontSize: 32,
+                      color: Color(0xff49c4ad),
                     ),
                   ),
                 ),
@@ -36,6 +37,7 @@ class RegisterScreen extends StatelessWidget {
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
+                      fontFamily: 'OpenSans',
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
                       fontSize: 24,
@@ -46,7 +48,7 @@ class RegisterScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextField(
-                    controller: TextEditingController(text: "John"),
+                    controller: TextEditingController(),
                     obscureText: false,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -74,6 +76,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       labelText: "Imie",
                       labelStyle: TextStyle(
+                        fontFamily: 'OpenSans',
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 16,
@@ -162,6 +165,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       labelText: "Hasło",
                       labelStyle: TextStyle(
+                        fontFamily: 'OpenSans',
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 16,
@@ -204,8 +208,9 @@ class RegisterScreen extends StatelessWidget {
                         borderSide:
                             BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
-                      labelText: "Confirm Password",
+                      labelText: "Powtórz hasło",
                       labelStyle: TextStyle(
+                        fontFamily: 'OpenSans',
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 16,
@@ -228,7 +233,7 @@ class RegisterScreen extends StatelessWidget {
                       flex: 1,
                       child: MaterialButton(
                         onPressed: () {},
-                        color: Color(0xff3a57e8),
+                        color: Color(0xff49c4ad),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
@@ -240,6 +245,7 @@ class RegisterScreen extends StatelessWidget {
                         child: Text(
                           "Zarejestruj się",
                           style: TextStyle(
+                            fontFamily: 'OpenSans',
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
@@ -265,8 +271,9 @@ class RegisterScreen extends StatelessWidget {
                         height: 40,
                         minWidth: 140,
                         child: Text(
-                          "Login",
+                          "Zaloguj się",
                           style: TextStyle(
+                            fontFamily: 'OpenSans',
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,

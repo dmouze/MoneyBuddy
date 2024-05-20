@@ -14,7 +14,7 @@ class ChangePasswordScreen extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
-          "Change Password",
+          "Zmiana hasła",
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontStyle: FontStyle.normal,
@@ -39,7 +39,7 @@ class ChangePasswordScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                 child: TextField(
-                  controller: TextEditingController(text: "12345678"),
+                  controller: TextEditingController(),
                   obscureText: true,
                   textAlign: TextAlign.start,
                   maxLines: 1,
@@ -65,14 +65,14 @@ class ChangePasswordScreen extends StatelessWidget {
                       borderSide:
                           BorderSide(color: Color(0xff9e9e9e), width: 1),
                     ),
-                    labelText: "Current Password",
+                    labelText: "Obecne hasło",
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
                       fontSize: 16,
                       color: Color(0xff9e9e9e),
                     ),
-                    hintText: "Enter  Current Password",
+                    hintText: "Wprowadż obecne hasło",
                     hintStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
@@ -90,7 +90,7 @@ class ChangePasswordScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                 child: TextField(
-                  controller: TextEditingController(text: "myPassword123"),
+                  controller: TextEditingController(),
                   obscureText: false,
                   textAlign: TextAlign.start,
                   maxLines: 1,
@@ -116,14 +116,14 @@ class ChangePasswordScreen extends StatelessWidget {
                       borderSide:
                           BorderSide(color: Color(0xff9e9e9e), width: 1),
                     ),
-                    labelText: "New Password",
+                    labelText: "Nowe hasło",
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
                       fontSize: 16,
                       color: Color(0xff9e9e9e),
                     ),
-                    hintText: "Enter New Password",
+                    hintText: "Wprowadź nowe hasło",
                     hintStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
@@ -141,7 +141,7 @@ class ChangePasswordScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                 child: TextField(
-                  controller: TextEditingController(text: "myPassword123"),
+                  controller: TextEditingController(),
                   obscureText: false,
                   textAlign: TextAlign.start,
                   maxLines: 1,
@@ -167,14 +167,14 @@ class ChangePasswordScreen extends StatelessWidget {
                       borderSide:
                           BorderSide(color: Color(0xff9e9e9e), width: 1),
                     ),
-                    labelText: "Re-enter Password",
+                    labelText: "Wprowadź hasło ponownie",
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
                       fontSize: 16,
                       color: Color(0xff9e9e9e),
                     ),
-                    hintText: "Re -enter Password",
+                    hintText: "Wprowadź hasło",
                     hintStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
@@ -203,7 +203,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   height: 40,
                   minWidth: 140,
                   child: Text(
-                    "Change",
+                    "Zmień",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
