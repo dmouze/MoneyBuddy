@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'MainScreen.dart';
 import 'RegisterScreen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -182,7 +183,12 @@ class LoginScreen extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => MainScreen())
+                            );
+                          },
                           color: Color(0xff49c4ad),
                           elevation: 0,
                           shape: RoundedRectangleBorder(

@@ -1,3 +1,8 @@
+buildscript {
+    ext.kotlin_version = '1.8.10'
+}
+
+
 plugins {
     id "com.android.application"
     id "kotlin-android"
@@ -45,7 +50,7 @@ android {
         applicationId "com.example.flutter_first_project"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -64,4 +69,15 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib and to not fail builds due duplicate classes")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib and to not fail builds due duplicate classes")
+        }
+    }
+}
+

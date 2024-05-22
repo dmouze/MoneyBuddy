@@ -10,18 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WemosConnect',
-
-      /// TODO Replace with your first screen class name
       home: LoginScreen(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text("My first flutter app"),
-    );
-  }
-}
