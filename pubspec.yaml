@@ -18,6 +18,8 @@ dependencies:
   timer_count_down: ^2.2.0
   flutter_blue: ^0.8.0
   flutter_reactive_ble: ^5.0.2
+  permission_handler: ^10.2.0
+  logger: ^2.3.0
 
 dev_dependencies:
   flutter_test:

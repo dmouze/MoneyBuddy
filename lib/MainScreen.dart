@@ -1,59 +1,94 @@
 import 'dart:async';
-
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 import 'BttmNavigationBar.dart';
 
 class MainScreen extends StatefulWidget {
+
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late Stopwatch _stopwatch;
+  late BluetoothDevice _device;
+  late StreamSubscription<BluetoothState> _stateSubscription;
 
   @override
   void initState() {
     super.initState();
-    _stopwatch = Stopwatch();
-    connectToDevice();
+    _initBluetooth();
   }
 
-  final flutterReactiveBle = FlutterReactiveBle();
+  @override
+  void dispose() {
+    _stateSubscription.cancel();
+    super.dispose();
+  }
 
-  Future<void> connectToDevice() async {
-    try {
-      // Rozpoczęcie skanowania urządzeń Bluetooth
-      final scanStream = flutterReactiveBle.scanForDevices(
-        withServices: [],
-        scanMode: ScanMode.lowLatency,
-      );
+  Future<void> _initBluetooth() async {
+    _stateSubscription = FlutterBlue.instance.state.listen((state) {
+      setState(() {});
+      if (state == BluetoothState.on) {
+        _scanForDevices();
+      }
+    });
+  }
 
-      // Oczekiwanie na urządzenie o określonej nazwie
-      final device = await scanStream
-          .firstWhere((device) => device.name == 'WemosD1')
-          .timeout(Duration(seconds: 10)); // Timeout na 10 sekund
+  void _scanForDevices() {
+    FlutterBlue.instance.scan().listen((scanResult) {
+      if (scanResult.device.name == "BLE") {
+        setState(() {
+          _device = scanResult.device;
+        });
+        _stopScanning();
+      }
+    });
+  }
 
-      // Nawiązanie połączenia z urządzeniem
-      flutterReactiveBle.connectToDevice(id: device.id);
+  void _stopScanning() {
+    FlutterBlue.instance.stopScan();
+  }
 
-      print('Połączono z urządzeniem: ${device.name}');
-    } catch (e) {
-      print('Nie udało się połączyć z urządzeniem: $e');
+  Future<void> _connectToDevice() async {
+
+    await _device.connect();
+    _discoverServices();
+  }
+
+  void _discoverServices() async {
+    final logger = Logger();
+    List<BluetoothService> services = await _device.discoverServices();
+    for (var service in services) {
+      if (service.uuid.toString() == "0000fff0-0000-1000-8000-00805f9b34fb") {
+        for (var characteristic in service.characteristics) {
+          if (characteristic.uuid.toString() ==
+              "0000fff0-0000-1000-8000-00805f9b34fb") {
+            // Tutaj możesz wykonywać operacje na charakterystyce
+            // np. odczytywać dane lub wysyłać komendy
+            // Przykład: characteristic.write([1, 2, 3]);
+
+            // Dodaj logi:
+            logger.d('Odczytano dane z charakterystyki: ${characteristic.value}');
+          }
+        }
+      }
     }
   }
 
-  String _formattedTime() {
-    final milliseconds = _stopwatch.elapsedMilliseconds;
-    final seconds = milliseconds ~/ 1000;
-    final remainingMilliseconds = milliseconds % 1000;
-
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String threeDigits(int n) => n.toString().padLeft(3, '0');
-
-    return '${twoDigits(seconds)}:${threeDigits(remainingMilliseconds)}';
-  }
+  //
+  // String _formattedTime() {
+  //   final milliseconds = _stopwatch.elapsedMilliseconds;
+  //   final seconds = milliseconds ~/ 1000;
+  //   final remainingMilliseconds = milliseconds % 1000;
+  //
+  //   String twoDigits(int n) => n.toString().padLeft(2, '0');
+  //   String threeDigits(int n) => n.toString().padLeft(3, '0');
+  //
+  //   return '${twoDigits(seconds)}:${threeDigits(remainingMilliseconds)}';
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +169,7 @@ class _MainScreenState extends State<MainScreen> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: MaterialButton(
-                      onPressed: connectToDevice,
+                      onPressed: _connectToDevice,
                       // Zmiana na funkcję łączenia z urządzeniem Bluetooth
                       color: Color(0xffffffff),
                       elevation: 3,
@@ -184,17 +219,17 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      _formattedTime(),
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 24,
-                        color: Color(0xff000000),
-                      ),
-                    ),
+                    // child: Text(
+                    //   // _formattedTime(),
+                    //   textAlign: TextAlign.start,
+                    //   overflow: TextOverflow.clip,
+                    //   style: TextStyle(
+                    //     fontWeight: FontWeight.w700,
+                    //     fontStyle: FontStyle.normal,
+                    //     fontSize: 24,
+                    //     color: Color(0xff000000),
+                    //   ),
+                    // ),
                   ),
                 ),
               ),
