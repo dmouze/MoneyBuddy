@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_project/LoginScreen.dart';
+import 'package:MoneyBuddy/LoginScreen.dart';
 import 'package:logger/logger.dart';
 
 void main() {
