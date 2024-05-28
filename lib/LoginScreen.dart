@@ -19,15 +19,15 @@ class LoginScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Image.asset(
-                  'assets/images/wemos.jpg',
+                  'assets/images/money.png',
                   height: 180,
                   width: 180,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 8, 0, 30),
                   child: Text(
-                    "Obsługa Wemos D1 R32",
+                    "Zarządzanie wydatkami",
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
