@@ -8,10 +8,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  double? _currentBalance = 0.0;
-  double? _income = 0.0;
-  double? _expenses = 0.0;
+  double _currentBalance = 0.0;
+  double _income = 0.0;
+  double _expenses = 0.0;
   final TextEditingController _expenseController = TextEditingController();
+  final TextEditingController _incomeController = TextEditingController();
   String _selectedCategory = 'Rent';
 
   final List<Map<String, dynamic>> _dataSource = [
@@ -29,33 +30,59 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _income = 5000.0;
     _expenses = _dataSource.map((e) => e['value'] as double).reduce((a, b) => a + b);
-    _currentBalance = _income! - _expenses!;
+    _currentBalance = _income - _expenses;
 
     _updateSeries();
   }
 
   void _updateSeries() {
-    _series = [
-      DoughnutSeries<Map<String, dynamic>, String>(
-        dataSource: _dataSource,
-        xValueMapper: (Map<String, dynamic> data, _) => data['category'] as String,
-        yValueMapper: (Map<String, dynamic> data, _) => data['value'] as double,
-        radius: '100%',
-        startAngle: 0,
-        endAngle: 360,
-        innerRadius: '50%',
-        dataLabelSettings: DataLabelSettings(
-          isVisible: true,
-          labelPosition: ChartDataLabelPosition.outside,
-          textStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    setState(() {
+      _series = [
+        DoughnutSeries<Map<String, dynamic>, String>(
+          dataSource: [
+            {'category': 'Available', 'value': _currentBalance},
+            ..._dataSource,
+          ],
+          xValueMapper: (Map<String, dynamic> data, _) => data['category'] as String,
+          yValueMapper: (Map<String, dynamic> data, _) => data['value'] as double,
+          radius: '100%',
+          startAngle: 0,
+          endAngle: 360,
+          innerRadius: '50%',
+          dataLabelSettings: DataLabelSettings(
+            isVisible: true,
+            labelPosition: ChartDataLabelPosition.outside,
+            textStyle: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
+          pointColorMapper: (Map<String, dynamic> data, _) {
+            if (data['category'] == 'Available') {
+              return _currentBalance < 0 ? Colors.red : Colors.green;
+            }
+            return null;
+          },
+          dataLabelMapper: (Map<String, dynamic> data, _) {
+            String label = '${data['value']} zł';
+            return label;
+          },
         ),
-      ),
-    ];
+      ];
+    });
   }
+
+  void _setIncome() {
+    final double? income = double.tryParse(_incomeController.text);
+    if (income != null) {
+      setState(() {
+        _currentBalance = _currentBalance + income;
+        _updateSeries();
+      });
+    }
+  }
+
 
   void _addExpense() {
     final double? value = double.tryParse(_expenseController.text);
@@ -73,11 +100,13 @@ class _MainScreenState extends State<MainScreen> {
           _dataSource.add({'category': _selectedCategory, 'value': value});
         }
         _expenses = _dataSource.map((e) => e['value'] as double).reduce((a, b) => a + b);
-        _currentBalance = _income! - _expenses!;
+        _currentBalance = _income - _expenses;
+        print('Expense added: $_expenses, Current balance: $_currentBalance');
         _updateSeries();
       });
     }
   }
+
 
   List<BttmNavigationBarModel> BttmNavigationBarItems = [
     BttmNavigationBarModel(icon: Icons.monetization_on, label: "Ekran Główny"),
@@ -174,7 +203,6 @@ class _MainScreenState extends State<MainScreen> {
                       Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        height: 200,
                         child: SfCircularChart(
                           series: _series,
                           tooltipBehavior: TooltipBehavior(enable: true),
@@ -194,6 +222,19 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
+                  TextField(
+                    controller: _incomeController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Wprowadź wpływy (zł)',
+                    ),
+                    keyboardType: TextInputType.number,
+                    onSubmitted: (value) {
+                      _setIncome();
+                      _incomeController.clear();
+                    },
+                  ),
+                  SizedBox(height: 16),
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),

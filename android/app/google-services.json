@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "688124174143",
+    "firebase_url": "https://moneybuddy-78b57-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "moneybuddy-78b57",
+    "storage_bucket": "moneybuddy-78b57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688124174143:android:f1ba9618fbc67d7de13d8a",
+        "android_client_info": {
+          "package_name": "com.example.flutter_first_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmziEoCVoqofItxkjQWXEKZDhu47qLcnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
