@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:MoneyBuddy/LoginScreen.dart';
 import 'package:logger/logger.dart';
+import 'firebaseservice.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseService.initialize();
   runApp(MyApp());
 }
 

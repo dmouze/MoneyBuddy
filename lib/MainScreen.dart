@@ -77,12 +77,12 @@ class _MainScreenState extends State<MainScreen> {
     final double? income = double.tryParse(_incomeController.text);
     if (income != null) {
       setState(() {
-        _currentBalance = _currentBalance + income;
+        _income += income;
+        _currentBalance = _income - _expenses;
         _updateSeries();
       });
     }
   }
-
 
   void _addExpense() {
     final double? value = double.tryParse(_expenseController.text);
@@ -101,12 +101,10 @@ class _MainScreenState extends State<MainScreen> {
         }
         _expenses = _dataSource.map((e) => e['value'] as double).reduce((a, b) => a + b);
         _currentBalance = _income - _expenses;
-        print('Expense added: $_expenses, Current balance: $_currentBalance');
         _updateSeries();
       });
     }
   }
-
 
   List<BttmNavigationBarModel> BttmNavigationBarItems = [
     BttmNavigationBarModel(icon: Icons.monetization_on, label: "Ekran Główny"),
@@ -192,17 +190,8 @@ class _MainScreenState extends State<MainScreen> {
                       Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        width: 200,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Color(0x00000000),
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.35,
                         child: SfCircularChart(
                           series: _series,
                           tooltipBehavior: TooltipBehavior(enable: true),
