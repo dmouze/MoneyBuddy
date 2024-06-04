@@ -1,6 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _register() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Hasła się nie zgadzają"),
+      ));
+      return;
+    }
+
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      // Po udanej rejestracji możesz zrobić coś z userCredential
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Rejestracja udana"),
+      ));
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Rejestracja nieudana: ${e.message}"),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +84,7 @@ class RegisterScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextField(
-                    controller: TextEditingController(),
+                    controller: _nameController,
                     obscureText: false,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -61,18 +97,15 @@ class RegisterScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       labelText: "Imie",
                       labelStyle: TextStyle(
@@ -85,15 +118,14 @@ class RegisterScreen extends StatelessWidget {
                       filled: true,
                       fillColor: Color(0x00ffffff),
                       isDense: false,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextField(
-                    controller: TextEditingController(),
+                    controller: _emailController,
                     obscureText: false,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -106,18 +138,15 @@ class RegisterScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       labelText: "E-mail",
                       labelStyle: TextStyle(
@@ -129,15 +158,14 @@ class RegisterScreen extends StatelessWidget {
                       filled: true,
                       fillColor: Color(0x00ffffff),
                       isDense: false,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextField(
-                    controller: TextEditingController(),
+                    controller: _passwordController,
                     obscureText: true,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -150,18 +178,15 @@ class RegisterScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       labelText: "Hasło",
                       labelStyle: TextStyle(
@@ -174,15 +199,14 @@ class RegisterScreen extends StatelessWidget {
                       filled: true,
                       fillColor: Color(0x00ffffff),
                       isDense: false,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 30),
                   child: TextField(
-                    controller: TextEditingController(),
+                    controller: _confirmPasswordController,
                     obscureText: true,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -195,18 +219,15 @@ class RegisterScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        borderSide: BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       labelText: "Powtórz hasło",
                       labelStyle: TextStyle(
@@ -219,8 +240,7 @@ class RegisterScreen extends StatelessWidget {
                       filled: true,
                       fillColor: Color(0x00ffffff),
                       isDense: false,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     ),
                   ),
                 ),
@@ -232,7 +252,7 @@ class RegisterScreen extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: MaterialButton(
-                        onPressed: () {},
+                        onPressed: _register,
                         color: Color(0xff49c4ad),
                         elevation: 0,
                         shape: RoundedRectangleBorder(

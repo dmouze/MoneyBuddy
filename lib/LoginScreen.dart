@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'MainScreen.dart';
 import 'RegisterScreen.dart';
 
 class LoginScreen extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _login(BuildContext context) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      // Po udanym logowaniu nawiguj do MainScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Logowanie nieudane: ${e.message}"),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
                   child: TextField(
-                    controller: TextEditingController(),
+                    controller: _emailController,
                     obscureText: false,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -69,17 +92,17 @@ class LoginScreen extends StatelessWidget {
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
                         borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
                         borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0),
                         borderSide:
-                            BorderSide(color: Color(0xff9e9e9e), width: 1),
+                        BorderSide(color: Color(0xff9e9e9e), width: 1),
                       ),
                       labelText: "E-mail",
                       labelStyle: TextStyle(
@@ -93,12 +116,12 @@ class LoginScreen extends StatelessWidget {
                       fillColor: Color(0x00f2f2f3),
                       isDense: false,
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     ),
                   ),
                 ),
                 TextField(
-                  controller: TextEditingController(),
+                  controller: _passwordController,
                   obscureText: true,
                   textAlign: TextAlign.start,
                   maxLines: 1,
@@ -112,17 +135,17 @@ class LoginScreen extends StatelessWidget {
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.0),
                       borderSide:
-                          BorderSide(color: Color(0xff9e9e9e), width: 1),
+                      BorderSide(color: Color(0xff9e9e9e), width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.0),
                       borderSide:
-                          BorderSide(color: Color(0xff9e9e9e), width: 1),
+                      BorderSide(color: Color(0xff9e9e9e), width: 1),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.0),
                       borderSide:
-                          BorderSide(color: Color(0xff9e9e9e), width: 1),
+                      BorderSide(color: Color(0xff9e9e9e), width: 1),
                     ),
                     labelText: "Hasło",
                     labelStyle: TextStyle(
@@ -136,7 +159,7 @@ class LoginScreen extends StatelessWidget {
                     fillColor: Color(0x00f2f2f3),
                     isDense: false,
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   ),
                 ),
                 Padding(
@@ -152,15 +175,15 @@ class LoginScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => RegisterScreen())
-                            );
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterScreen()));
                           },
                           color: Color(0xffffffff),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             side:
-                                BorderSide(color: Color(0xff9e9e9e), width: 1),
+                            BorderSide(color: Color(0xff9e9e9e), width: 1),
                           ),
                           padding: EdgeInsets.all(16),
                           textColor: Color(0xff000000),
@@ -183,12 +206,7 @@ class LoginScreen extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: MaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => MainScreen())
-                            );
-                          },
+                          onPressed: () => _login(context),
                           color: Color(0xff49c4ad),
                           elevation: 0,
                           shape: RoundedRectangleBorder(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'BttmNavigationBar.dart';
 
 class MainScreen extends StatefulWidget {
@@ -33,6 +35,34 @@ class _MainScreenState extends State<MainScreen> {
     _currentBalance = _income - _expenses;
 
     _updateSeries();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (userDoc.exists) {
+        setState(() {
+          _income = userDoc['income'] ?? 0.0;
+          _dataSource.clear();
+          _dataSource.addAll((userDoc['expenses'] as List).map((e) => e as Map<String, dynamic>));
+          _expenses = _dataSource.map((e) => e['value'] as double).reduce((a, b) => a + b);
+          _currentBalance = _income - _expenses;
+          _updateSeries();
+        });
+      }
+    }
+  }
+
+  Future<void> _saveUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'income': _income,
+        'expenses': _dataSource,
+      });
+    }
   }
 
   void _updateSeries() {
@@ -80,6 +110,7 @@ class _MainScreenState extends State<MainScreen> {
         _income += income;
         _currentBalance = _income - _expenses;
         _updateSeries();
+        _saveUserData();
       });
     }
   }
@@ -102,6 +133,7 @@ class _MainScreenState extends State<MainScreen> {
         _expenses = _dataSource.map((e) => e['value'] as double).reduce((a, b) => a + b);
         _currentBalance = _income - _expenses;
         _updateSeries();
+        _saveUserData();
       });
     }
   }
@@ -191,7 +223,7 @@ class _MainScreenState extends State<MainScreen> {
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.35,
+                        height: MediaQuery.of(context).size.height * 0.33,
                         child: SfCircularChart(
                           series: _series,
                           tooltipBehavior: TooltipBehavior(enable: true),
