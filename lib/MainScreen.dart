@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'AccountSettings.dart';
 import 'BttmNavigationBar.dart';
 
 class MainScreen extends StatefulWidget {
@@ -143,6 +144,8 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  int _currentIndex = 0;
+
   List<BttmNavigationBarModel> BttmNavigationBarItems = [
     BttmNavigationBarModel(icon: Icons.monetization_on, label: "Ekran Główny"),
     BttmNavigationBarModel(icon: Icons.account_circle, label: "Konto"),
@@ -169,7 +172,22 @@ class _MainScreenState extends State<MainScreen> {
         unselectedFontSize: 14,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        onTap: (value) {},
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+            if (index == 0) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MainScreen()),
+              );
+            } else if (index == 1) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AccountSettings()),
+              );
+            }
+          });
+        },
       ),
       body: SingleChildScrollView(
         child: Column(
