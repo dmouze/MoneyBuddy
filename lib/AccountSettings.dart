@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'MainScreen.dart';
+
 import 'BttmNavigationBar.dart';
+import 'MainScreen.dart';
 
 class AccountSettings extends StatefulWidget {
   @override
@@ -9,14 +11,71 @@ class AccountSettings extends StatefulWidget {
 
 class _AccountSettingsState extends State<AccountSettings> {
   int _currentIndex = 1;
+
   TextEditingController _oldPasswordController = TextEditingController();
   TextEditingController _newPasswordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
+  late ScaffoldMessengerState _scaffoldMessengerState;
+  String newPassword = "";
 
   List<BttmNavigationBarModel> BttmNavigationBarItems = [
     BttmNavigationBarModel(icon: Icons.monetization_on, label: "Ekran Główny"),
     BttmNavigationBarModel(icon: Icons.account_circle, label: "Konto"),
   ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scaffoldMessengerState = ScaffoldMessenger.of(context);
+  }
+
+  Future<bool> _isOldPasswordCorrect(String enteredOldPassword) async {
+    try {
+      // Get the current user
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Sign in the user with their email and old password to verify it
+        AuthCredential credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: enteredOldPassword,
+        );
+
+        // Attempt to re-authenticate the user with the entered old password
+        await user.reauthenticateWithCredential(credential);
+
+        // If re-authentication is successful, the old password is correct
+        return true;
+      } else {
+        // No user signed in
+        return false;
+      }
+    } catch (error) {
+      // Re-authentication failed, meaning the old password is incorrect
+      return false;
+    }
+  }
+
+  Future<void> _changePassword(String newPassword) async {
+    try {
+      // Get the current user
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Update the user's password
+        await user.updatePassword(newPassword);
+
+        // Password successfully updated
+        // You can show a success message or perform other actions here
+      } else {
+        // No user signed in
+        // You can handle this scenario accordingly
+      }
+    } catch (error) {
+      // An error occurred while changing the password
+      // You can handle and show the error message accordingly
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +149,8 @@ class _AccountSettingsState extends State<AccountSettings> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +234,20 @@ class _AccountSettingsState extends State<AccountSettings> {
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
               child: MaterialButton(
                 onPressed: () {
-                  // Add your onPressed code here!
+                  String enteredOldPassword = _oldPasswordController.text;
+                  if (_isOldPasswordCorrect(enteredOldPassword) == false) {
+                    _scaffoldMessengerState.showSnackBar(SnackBar(
+                      content: Text("Podane stare hasło jest nieprawidłowe."),
+                    ));
+                  } else if (_newPasswordController.text !=
+                      _confirmPasswordController.text) {
+                    _scaffoldMessengerState.showSnackBar(SnackBar(
+                      content: Text("Nowe hasła nie są zgodne."),
+                    ));
+                  } else {
+                    newPassword == _confirmPasswordController.text;
+                    _changePassword(newPassword);
+                  }
                 },
                 color: Color(0xff49c4ad),
                 elevation: 0,
