@@ -15,22 +15,20 @@ class _MainScreenState extends State<MainScreen> {
   double _expenses = 0.0;
   final TextEditingController _expenseController = TextEditingController();
   final TextEditingController _incomeController = TextEditingController();
-  String _selectedCategory = 'Rent';
+  String _selectedCategory = 'Mieszkanie';
 
   final List<Map<String, dynamic>> _dataSource = [
-    {'category': 'Rent', 'value': 1000.0},
-    {'category': 'Groceries', 'value': 2000.0},
-    {'category': 'Transportation', 'value': 500.0},
+    {'category': 'Stan konta', 'value': 0.0}
   ];
 
-  final List<String> _categories = ['Rent', 'Groceries', 'Transportation', 'Other'];
+  final List<String> _categories = ['Mieszkanie', 'Jedzenie', 'Transport', 'Rozwój', 'Rozrywka' , 'Inne'];
 
   late List<DoughnutSeries<Map<String, dynamic>, String>> _series;
 
   @override
   void initState() {
     super.initState();
-    _income = 5000.0;
+    _income = 0.0;
     _expenses = _dataSource.map((e) => e['value'] as double).reduce((a, b) => a + b);
     _currentBalance = _income - _expenses;
 
@@ -67,12 +65,19 @@ class _MainScreenState extends State<MainScreen> {
 
   void _updateSeries() {
     setState(() {
+      List<Map<String, dynamic>> chartData = [
+        {'category': 'Stan konta', 'value': _currentBalance}
+      ];
+
+      for (var item in _dataSource) {
+        if (item['category'] != 'Stan konta') {
+          chartData.add(item);
+        }
+      }
+
       _series = [
         DoughnutSeries<Map<String, dynamic>, String>(
-          dataSource: [
-            {'category': 'Available', 'value': _currentBalance},
-            ..._dataSource,
-          ],
+          dataSource: chartData,
           xValueMapper: (Map<String, dynamic> data, _) => data['category'] as String,
           yValueMapper: (Map<String, dynamic> data, _) => data['value'] as double,
           radius: '100%',
@@ -89,7 +94,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           pointColorMapper: (Map<String, dynamic> data, _) {
-            if (data['category'] == 'Available') {
+            if (data['category'] == 'Stan konta') {
               return _currentBalance < 0 ? Colors.red : Colors.green;
             }
             return null;
