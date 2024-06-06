@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'BttmNavigationBar.dart';
 import 'MainScreen.dart';
 
@@ -66,14 +65,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         await user.updatePassword(newPassword);
 
         // Password successfully updated
-        // You can show a success message or perform other actions here
+        _scaffoldMessengerState.showSnackBar(SnackBar(
+          content: Text("Hasło zostało pomyślnie zmienione."),
+        ));
       } else {
         // No user signed in
-        // You can handle this scenario accordingly
+        _scaffoldMessengerState.showSnackBar(SnackBar(
+          content: Text("Nie znaleziono użytkownika."),
+        ));
       }
     } catch (error) {
       // An error occurred while changing the password
-      // You can handle and show the error message accordingly
+      _scaffoldMessengerState.showSnackBar(SnackBar(
+        content: Text("Błąd podczas zmiany hasła: $error"),
+      ));
     }
   }
 
@@ -149,8 +154,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,9 +237,9 @@ class _AccountSettingsState extends State<AccountSettings> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
               child: MaterialButton(
-                onPressed: () {
+                onPressed: () async {
                   String enteredOldPassword = _oldPasswordController.text;
-                  if (_isOldPasswordCorrect(enteredOldPassword) == false) {
+                  if (await _isOldPasswordCorrect(enteredOldPassword) == false) {
                     _scaffoldMessengerState.showSnackBar(SnackBar(
                       content: Text("Podane stare hasło jest nieprawidłowe."),
                     ));
@@ -245,8 +249,8 @@ class _AccountSettingsState extends State<AccountSettings> {
                       content: Text("Nowe hasła nie są zgodne."),
                     ));
                   } else {
-                    newPassword == _confirmPasswordController.text;
-                    _changePassword(newPassword);
+                    newPassword = _confirmPasswordController.text;
+                    await _changePassword(newPassword);
                   }
                 },
                 color: Color(0xff49c4ad),
