@@ -22,8 +22,9 @@ class _MainScreenState extends State<MainScreen> {
     {'category': 'Stan konta', 'value': 0.0}
   ];
 
-  final List<String> _categories = ['Mieszkanie', 'Jedzenie', 'Transport', 'Rozwój', 'Rozrywka' , 'Inne'];
+  final List<String> _categories = ['Mieszkanie', 'Jedzenie', 'Transport', 'Rozwój', 'Rozrywka', 'Inne'];
 
+  List<Map<String, dynamic>> _recentTransactions = [];
   late List<DoughnutSeries<Map<String, dynamic>, String>> _series;
 
   @override
@@ -35,6 +36,7 @@ class _MainScreenState extends State<MainScreen> {
 
     _updateSeries();
     _loadUserData();
+    _loadRecentTransactions();
   }
 
   Future<void> _loadUserData() async {
@@ -60,6 +62,40 @@ class _MainScreenState extends State<MainScreen> {
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
         'income': _income,
         'expenses': _dataSource,
+      });
+    }
+  }
+
+  Future<void> _saveTransaction(String type, double amount, String category) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).collection('transactions').add({
+        'type': type,
+        'amount': amount,
+        'category': category,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
+  }
+
+  Future<void> _loadRecentTransactions() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('transactions')
+          .orderBy('timestamp', descending: true)
+          .get();
+
+      setState(() {
+        _recentTransactions = querySnapshot.docs.map((doc) {
+          return {
+            'type': doc['type'],
+            'amount': doc['amount'],
+            'category': doc['category'],
+          };
+        }).toList();
       });
     }
   }
@@ -115,8 +151,10 @@ class _MainScreenState extends State<MainScreen> {
       setState(() {
         _income += income;
         _currentBalance = _income - _expenses;
+        _recentTransactions.add({'type': 'Wpływy', 'amount': income, 'category': ''});
         _updateSeries();
         _saveUserData();
+        _saveTransaction('Wpływy', income, 'Wpłata');
       });
     }
   }
@@ -138,10 +176,45 @@ class _MainScreenState extends State<MainScreen> {
         }
         _expenses = _dataSource.map((e) => e['value'] as double).reduce((a, b) => a + b);
         _currentBalance = _income - _expenses;
+        _recentTransactions.add({'type': 'Wydatki', 'amount': value, 'category': _selectedCategory});
         _updateSeries();
         _saveUserData();
+        _saveTransaction('Wydatki', value, _selectedCategory);
       });
     }
+  }
+
+  void _showRecentTransactions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Ostatnie transakcje'),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _recentTransactions.length,
+              itemBuilder: (BuildContext context, int index) {
+                final transaction = _recentTransactions[index];
+                return ListTile(
+                  title: Text(transaction['type']),
+                  subtitle: Text('${transaction['amount']} zł  ${transaction['category']}'),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Zamknij'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   int _currentIndex = 0;
@@ -163,7 +236,7 @@ class _MainScreenState extends State<MainScreen> {
           );
         }).toList(),
         backgroundColor: Color(0xffffffff),
-        currentIndex: 0,
+        currentIndex: _currentIndex,
         elevation: 8,
         iconSize: 24,
         selectedItemColor: Color(0xff49c4ad),
@@ -309,6 +382,11 @@ class _MainScreenState extends State<MainScreen> {
                       _addExpense();
                       _expenseController.clear();
                     },
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _showRecentTransactions,
+                    child: Text('Pokaż ostatnie transakcje'),
                   ),
                 ],
               ),
