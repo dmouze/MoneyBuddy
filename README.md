@@ -51,21 +51,5 @@ Money Manager is a mobile application built with Flutter and Dart, designed to h
 - **Firebase Firestore:** For real-time database and data synchronization.
 - **Firebase Authentication:** For secure user authentication.
 
-## Learning Outcomes
-During the development of this project, several key areas of mobile application development were explored and learned:
-- Understanding the fundamentals and advanced concepts of Flutter and Dart.
-- Learning to integrate Firebase services such as Firestore and Authentication into a Flutter app.
-- Managing the state of the application efficiently using setState and other state management techniques.
-- Designing a responsive and user-friendly interface using Flutter widgets and layouts.
-- Addressing and resolving various issues encountered during the development process.
-
-## Challenges Faced
-- The initial setup of the Flutter environment, including installation and configuration of required tools and dependencies.
-- Setting up and integrating Firebase services correctly with the Flutter application.
-- Efficiently managing the application state to ensure smooth user experience and data consistency.
-
-## Contribution
-Contributions are welcome! If you have any suggestions, bug reports, or improvements, please feel free to open an issue or submit a pull request.
-
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
