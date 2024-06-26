@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBWT-MSPabionbDGSQoGL7K1oh_qD07in4',
+    apiKey: 'hide-MSPabionbDGSQoGL7K1oh_qD07in4',
     appId: '1:688124174143:web:96a2f635027666c3e13d8a',
     messagingSenderId: '688124174143',
     projectId: 'moneybuddy-78b57',
@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBmziEoCVoqofItxkjQWXEKZDhu47qLcnY',
+    apiKey: 'hide',
     appId: '1:688124174143:android:f1ba9618fbc67d7de13d8a',
     messagingSenderId: '688124174143',
     projectId: 'moneybuddy-78b57',
@@ -60,7 +60,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAtB6RrmPqn_6EjG3mmeWTYHfZsDhq4gSQ',
+    apiKey: 'hide_6EjG3mmeWTYHfZsDhq4gSQ',
     appId: '1:688124174143:ios:050d689cf341ed6de13d8a',
     messagingSenderId: '688124174143',
     projectId: 'moneybuddy-78b57',
@@ -70,7 +70,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAtB6RrmPqn_6EjG3mmeWTYHfZsDhq4gSQ',
+    apiKey: 'hide_6EjG3mmeWTYHfZsDhq4gSQ',
     appId: '1:688124174143:ios:050d689cf341ed6de13d8a',
     messagingSenderId: '688124174143',
     projectId: 'moneybuddy-78b57',
@@ -80,7 +80,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBWT-MSPabionbDGSQoGL7K1oh_qD07in4',
+    apiKey: 'hide-MSPabionbDGSQoGL7K1oh_qD07in4',
     appId: '1:688124174143:web:0d76061ef21afd6ce13d8a',
     messagingSenderId: '688124174143',
     projectId: 'moneybuddy-78b57',
